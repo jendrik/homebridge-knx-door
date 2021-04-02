@@ -1,0 +1,63 @@
+{
+  "pluginAlias": "knx-door",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "ip": {
+      "title": "KNX Router or Interface",
+      "type": "string",
+      "placeholder": "127.0.0.1",
+      "description": "IP of the KNX Router."
+    },
+    "port": {
+      "title": "KNX Port",
+      "type": "string",
+      "placeholder": "3671",
+      "description": "KNX Port"
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "title": "Door & Window Contact Sensors",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "required": true,
+            "placeholder": "Display Name for Door or Window Contact Sensor"
+          },
+          "listen": {
+            "title": "Listen Address",
+            "type": "string",
+            "required": true,
+            "placeholder": "1/1/1",
+            "pattern": "^[0-9]{1,4}/[0-9]{1,4}/[0-9]{1,4}$"
+          }
+        }
+      }
+    }
+  },
+  "layout": [
+    {
+      "key": "devices",
+      "type": "array",
+      "orderable": false,
+      "buttonText": "Add Door or Window Contact Sensor",
+      "items": [
+        "devices[].name",
+        "devices[].listen"
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Global",
+      "expandable": true,
+      "expanded": false,
+      "items": [
+        "ip",
+        "port"
+      ]
+    }
+  ]
+}
