@@ -1,16 +1,15 @@
-import { API, StaticPlatformPlugin, Logger, PlatformConfig, AccessoryPlugin, Service, Characteristic, uuid } from 'homebridge';
+import type { API, StaticPlatformPlugin, Logging, PlatformConfig, AccessoryPlugin, Service, Characteristic, uuid } from 'homebridge';
 
 import fakegato from 'fakegato-history';
-
 import { Connection } from 'knx';
 
-import { ContactSensorAccessory } from './accessory';
+import { ContactSensorAccessory } from './accessory.js';
 
 
 export class ContactSensorPlatform implements StaticPlatformPlugin {
-  public readonly Service: typeof Service = this.api.hap.Service;
-  public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
-  public readonly uuid: typeof uuid = this.api.hap.uuid;
+  public readonly Service: typeof Service;
+  public readonly Characteristic: typeof Characteristic;
+  public readonly uuid: typeof uuid;
 
   public readonly fakeGatoHistoryService;
 
@@ -19,10 +18,13 @@ export class ContactSensorPlatform implements StaticPlatformPlugin {
   private readonly devices: ContactSensorAccessory[] = [];
 
   constructor(
-    public readonly log: Logger,
+    public readonly log: Logging,
     public readonly config: PlatformConfig,
     public readonly api: API,
   ) {
+    this.Service = api.hap.Service;
+    this.Characteristic = api.hap.Characteristic;
+    this.uuid = api.hap.uuid;
     this.fakeGatoHistoryService = fakegato(this.api);
 
     // connect
@@ -40,7 +42,8 @@ export class ContactSensorPlatform implements StaticPlatformPlugin {
     });
 
     // read devices
-    config.devices.forEach(element => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    config.devices.forEach((element: any) => {
       if (element.name !== undefined && element.listen) {
         this.devices.push(new ContactSensorAccessory(this, element));
       }

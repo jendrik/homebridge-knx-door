@@ -1,11 +1,8 @@
-import { AccessoryConfig, AccessoryPlugin, Service } from 'homebridge';
+import type { AccessoryConfig, AccessoryPlugin, Service } from 'homebridge';
 
 import { Datapoint } from 'knx';
-import fakegato from 'fakegato-history';
-
-import { PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_DISPLAY_NAME } from './settings';
-
-import { ContactSensorPlatform } from './platform';
+import { PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_DISPLAY_NAME } from './settings.js';
+import type { ContactSensorPlatform } from './platform.js';
 
 
 export class ContactSensorAccessory implements AccessoryPlugin {
@@ -15,7 +12,8 @@ export class ContactSensorAccessory implements AccessoryPlugin {
   private readonly listen: string;
 
   private readonly contactSensorService: Service;
-  private readonly loggingService: fakegato;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private readonly loggingService: any;
   private readonly informationService: Service;
 
   constructor(
@@ -28,8 +26,8 @@ export class ContactSensorAccessory implements AccessoryPlugin {
 
       constructor() {
         super('Times Opened', EveContactSensorTimesOpened.UUID, {
-          format: platform.Characteristic.Formats.UINT32,
-          perms: [platform.Characteristic.Perms.READ, platform.Characteristic.Perms.NOTIFY],
+          format: platform.api.hap.Formats.UINT32,
+          perms: [platform.api.hap.Perms.PAIRED_READ, platform.api.hap.Perms.NOTIFY],
         });
         this.value = this.getDefaultValue();
       }
@@ -40,9 +38,9 @@ export class ContactSensorAccessory implements AccessoryPlugin {
 
       constructor() {
         super('Open Duration', EveContactSensorOpenDuration.UUID, {
-          format: platform.Characteristic.Formats.UINT32,
-          unit: platform.Characteristic.Units.SECONDS,
-          perms: [platform.Characteristic.Perms.READ, platform.Characteristic.Perms.NOTIFY, platform.Characteristic.Perms.WRITE],
+          format: platform.api.hap.Formats.UINT32,
+          unit: platform.api.hap.Units.SECONDS,
+          perms: [platform.api.hap.Perms.PAIRED_READ, platform.api.hap.Perms.NOTIFY, platform.api.hap.Perms.PAIRED_WRITE],
         });
         this.value = this.getDefaultValue();
       }
@@ -53,9 +51,9 @@ export class ContactSensorAccessory implements AccessoryPlugin {
 
       constructor() {
         super('Closed Duration', EveContactSensorClosedDuration.UUID, {
-          format: platform.Characteristic.Formats.UINT32,
-          unit: platform.Characteristic.Units.SECONDS,
-          perms: [platform.Characteristic.Perms.READ, platform.Characteristic.Perms.NOTIFY, platform.Characteristic.Perms.WRITE],
+          format: platform.api.hap.Formats.UINT32,
+          unit: platform.api.hap.Units.SECONDS,
+          perms: [platform.api.hap.Perms.PAIRED_READ, platform.api.hap.Perms.NOTIFY, platform.api.hap.Perms.PAIRED_WRITE],
         });
         this.value = this.getDefaultValue();
       }
@@ -66,9 +64,9 @@ export class ContactSensorAccessory implements AccessoryPlugin {
 
       constructor() {
         super('Last Activation', EveContactSensorLastActivation.UUID, {
-          format: platform.Characteristic.Formats.UINT32,
-          unit: platform.Characteristic.Units.SECONDS,
-          perms: [platform.Characteristic.Perms.READ, platform.Characteristic.Perms.NOTIFY],
+          format: platform.api.hap.Formats.UINT32,
+          unit: platform.api.hap.Units.SECONDS,
+          perms: [platform.api.hap.Perms.PAIRED_READ, platform.api.hap.Perms.NOTIFY],
         });
         this.value = this.getDefaultValue();
       }
@@ -114,7 +112,7 @@ export class ContactSensorAccessory implements AccessoryPlugin {
       let duration = 0;
       let prevStatus = undefined;
       let prevTime = undefined;
-      for (let i =0; i < this.loggingService.history.length; ++i) {
+      for (let i = 0; i < this.loggingService.history.length; ++i) {
         const status = this.loggingService.history[i].status;
         const time = this.loggingService.history[i].time;
         if (status === undefined || time === undefined) {
@@ -136,7 +134,7 @@ export class ContactSensorAccessory implements AccessoryPlugin {
       let duration = 0;
       let prevStatus = undefined;
       let prevTime = undefined;
-      for (let i =0; i < this.loggingService.history.length; ++i) {
+      for (let i = 0; i < this.loggingService.history.length; ++i) {
         const status = this.loggingService.history[i].status;
         const time = this.loggingService.history[i].time;
         if (status === undefined || time === undefined) {
