@@ -2,7 +2,7 @@
   "displayName": "KNX Door",
   "name": "@jendrik/homebridge-knx-door",
   "type": "module",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Homebridge plugin for KNX Door & Window Contact Sensors",
   "license": "Apache-2.0",
   "repository": {
