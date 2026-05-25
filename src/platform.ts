@@ -1,3 +1,5 @@
+import { isIP } from 'node:net';
+
 import type { API, StaticPlatformPlugin, Logging, PlatformConfig, AccessoryPlugin, Service, Characteristic, uuid } from 'homebridge';
 
 import fakegato from 'fakegato-history';
@@ -67,14 +69,27 @@ export class ContactSensorPlatform implements StaticPlatformPlugin {
   }
 
   private normalizeConfig(config: PlatformConfig): NormalizedPlatformConfig {
-    const ip = typeof config.ip === 'string' && config.ip.trim().length > 0
-      ? config.ip.trim()
-      : DEFAULT_KNX_IP;
-
+    const ip = this.normalizeIp(config.ip);
     const port = this.normalizePort(config.port);
     const devices = this.normalizeDevices(config.devices);
 
     return { ip, port, devices };
+  }
+
+  private normalizeIp(value: unknown): string {
+    if (value === undefined) {
+      return DEFAULT_KNX_IP;
+    }
+
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (trimmed.length > 0 && isIP(trimmed) !== 0) {
+        return trimmed;
+      }
+    }
+
+    this.log.warn(`Invalid KNX IP "${String(value)}"; using ${DEFAULT_KNX_IP}`);
+    return DEFAULT_KNX_IP;
   }
 
   private normalizePort(value: unknown): number {
