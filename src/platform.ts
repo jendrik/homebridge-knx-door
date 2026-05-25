@@ -83,7 +83,7 @@ export class ContactSensorPlatform implements StaticPlatformPlugin {
 
     if (typeof value === 'string') {
       const trimmed = value.trim();
-      if (trimmed.length > 0 && isIP(trimmed) !== 0) {
+      if (trimmed.length > 0 && isIP(trimmed) === 4) {
         return trimmed;
       }
     }

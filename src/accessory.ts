@@ -39,6 +39,8 @@ function addHistoryEntry(loggingService: FakeGatoHistoryService, entry: Required
 }
 
 export class ContactSensorAccessory implements AccessoryPlugin {
+  public readonly displayName: string;
+
   private readonly uuidBase: string;
   private readonly name: string;
   private readonly listen: string;
@@ -49,17 +51,18 @@ export class ContactSensorAccessory implements AccessoryPlugin {
 
   constructor(
     private readonly platform: ContactSensorPlatform,
-    private readonly config: ContactSensorDeviceConfig,
+    config: ContactSensorDeviceConfig,
   ) {
     this.name = config.name;
     this.listen = config.listen;
     this.uuidBase = platform.uuid.generate(`${ACCESSORY_UUID_NAMESPACE}-${this.name}-${this.listen}`);
+    this.displayName = this.uuidBase;
 
     this.informationService = new platform.Service.AccessoryInformation()
       .setCharacteristic(platform.Characteristic.Name, this.name)
       .setCharacteristic(platform.Characteristic.Manufacturer, '@jendrik')
       .setCharacteristic(platform.Characteristic.Model, PLUGIN_DISPLAY_NAME)
-      .setCharacteristic(platform.Characteristic.SerialNumber, this.uuidBase)
+      .setCharacteristic(platform.Characteristic.SerialNumber, this.displayName)
       .setCharacteristic(platform.Characteristic.FirmwareRevision, PLUGIN_VERSION);
 
     this.contactSensorService = new platform.Service.ContactSensor(this.name);
