@@ -1,7 +1,7 @@
 import type { AccessoryConfig, AccessoryPlugin, Service } from 'homebridge';
 
 import { Datapoint } from 'knx';
-import { PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_DISPLAY_NAME } from './settings.js';
+import { ACCESSORY_UUID_NAMESPACE, PLUGIN_VERSION, PLUGIN_DISPLAY_NAME } from './settings.js';
 import type { ContactSensorPlatform } from './platform.js';
 
 
@@ -74,7 +74,7 @@ export class ContactSensorAccessory implements AccessoryPlugin {
 
     this.name = config.name;
     this.listen = config.listen;
-    this.uuid_base = platform.uuid.generate(PLUGIN_NAME + '-' + this.name + '-' + this.listen);
+    this.uuid_base = platform.uuid.generate(ACCESSORY_UUID_NAMESPACE + '-' + this.name + '-' + this.listen);
     this.displayName = this.uuid_base;
 
     this.informationService = new platform.Service.AccessoryInformation()

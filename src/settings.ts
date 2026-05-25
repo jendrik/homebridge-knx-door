@@ -15,6 +15,11 @@ const { displayName, name, version } = require('../package.json') as PackageMeta
 export const PLATFORM_NAME = 'knx-door';
 
 /**
+ * Intentionally preserves the original accessory UUID namespace for existing configured devices.
+ */
+export const ACCESSORY_UUID_NAMESPACE = 'homebridge-knx-door';
+
+/**
  * This must match the package name in package.json when Homebridge APIs require the plugin identifier.
  */
 export const PLUGIN_NAME = name;
