@@ -34,6 +34,10 @@ const EVE_CONTACT_SENSOR_OPEN_DURATION_UUID = 'E863F118-079E-48FF-8F27-9C2605A29
 const EVE_CONTACT_SENSOR_CLOSED_DURATION_UUID = 'E863F119-079E-48FF-8F27-9C2605A29F52';
 const EVE_CONTACT_SENSOR_LAST_ACTIVATION_UUID = 'E863F11A-079E-48FF-8F27-9C2605A29F52';
 
+function addHistoryEntry(loggingService: FakeGatoHistoryService, entry: Required<FakeGatoHistoryEntry>): void {
+  loggingService._addEntry(entry);
+}
+
 export class ContactSensorAccessory implements AccessoryPlugin {
   private readonly uuidBase: string;
   private readonly name: string;
@@ -170,7 +174,7 @@ export class ContactSensorAccessory implements AccessoryPlugin {
       : this.platform.Characteristic.ContactSensorState.CONTACT_DETECTED;
 
     this.contactSensorService.getCharacteristic(this.platform.Characteristic.ContactSensorState).updateValue(contactState);
-    this.loggingService._addEntry({ time: Math.round(Date.now() / 1000), status: isOpen });
+    addHistoryEntry(this.loggingService, { time: Math.round(Date.now() / 1000), status: isOpen });
   }
 
   private normalizeContactValue(value: unknown): boolean | undefined {
