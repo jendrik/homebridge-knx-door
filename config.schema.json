@@ -24,22 +24,23 @@
       "devices": {
         "title": "Door & Window Contact Sensors",
         "type": "array",
-        "required": true,
         "minItems": 1,
         "items": {
           "type": "object",
+          "required": [
+            "name",
+            "listen"
+          ],
           "properties": {
             "name": {
               "title": "Name",
               "type": "string",
-              "required": true,
               "minLength": 1,
               "placeholder": "Display Name for Door or Window Contact Sensor"
             },
             "listen": {
               "title": "Listen Address",
               "type": "string",
-              "required": true,
               "placeholder": "1/1/1",
               "pattern": "^[0-9]{1,4}/[0-9]{1,4}/[0-9]{1,4}$"
             }
