@@ -6,8 +6,8 @@ Exposes KNX binary contact sensors (DPT 1.001) as HomeKit contact sensors, with 
 
 ## Requirements
 
-- [Homebridge](https://homebridge.io/) v1.8.0 or later (including v2.0)
-- Node.js v20.18 or later
+- [Homebridge](https://homebridge.io/) v2.0.0 or later
+- Node.js v22 or v24
 - A KNX IP router or interface reachable on the network
 
 ## Installation
